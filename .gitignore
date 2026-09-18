@@ -1,0 +1,27 @@
+# ROMs are never committed. Bring your own.
+*.bin
+*.gen
+*.smd
+
+# Build trees and release output.
+build/
+build-*/
+dist/
+*.zip
+
+# Local tooling and scratch space.
+.claude/
+.vs/
+work/
+ghidra_sega_ldr/
+
+# Runtime output that lands next to the exe when run from the tree.
+*.log
+*.map
+*.wav
+dispatch_misses.toml
+floor_coverage.toml
+settings.ini
+!release/settings.ini
+rom-*.cfg
+debug.ini

@@ -1,0 +1,7 @@
+[submodule "segagenesisrecomp"]
+	path = segagenesisrecomp
+	url = https://github.com/vibecodekun/segagenesisrecomp.git
+	branch = mspacman
+[submodule "recomp-ui"]
+	path = recomp-ui
+	url = https://github.com/RetroPortingToolKit/recomp-ui.git
