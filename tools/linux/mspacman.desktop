@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Ms. Pac-Man (Recompiled)
+Comment=Ms. Pac-Man (Tengen) for Sega Genesis, recompiled to native code
+Exec=MsPacManRecomp
+Icon=mspacman
+Categories=Game;ArcadeGame;
+Terminal=false

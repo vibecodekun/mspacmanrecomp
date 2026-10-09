@@ -1,0 +1,81 @@
+# game.toml — Ms. Pac-Man (Tengen, 1991). USA/Europe, 128 KB ROM.
+# 68000, flat $000000-$01FFFF, identity-mapped (no banks, no SRAM).
+#
+# No community disassembly exists: discovery is the recompiler's heuristic
+# (vector-table scan + BSR/JSR/RTS walk + pcrel jump-table auto-walk), refined
+# by the dispatch-miss / Tier-3 floor loop. Every lead is cross-checked against
+# the raw ROM before it becomes a seed (PRINCIPLES #16).
+#
+# ROM identity: header "MS PACMAN", serial GM T-48036 -00, (C)T-48 1991.MAR,
+# region "JUE", CRC32 AF041BE6. Vectors (from $000000):
+#   SSP   $00000000   (first push wraps to $FFFFFC — top of work RAM)
+#   Entry $000200
+#   V-int $0014AA     (IRQ6)
+#   H-int $000000     (unused: VDP reg 0 never enables IRQ4)
+#
+# Execution model (see mspacman_spec.c): every piece of gameplay runs INSIDE
+# the V-int handler. The main program only ever unmasks interrupts right
+# before one of two `BRA *` idle loops ($0008F6 gameplay, $00F76E attract).
+# The handler may run for many frames (it polls the HV counter at $0004E8),
+# and three paths ($001540, $0017F8, $001932) discard its own exception frame
+# and continue as main-program code. The spec therefore takes IRQ6 on the
+# game fiber from those idle loops instead of using the runner's atomic
+# V-int delivery.
+
+[game]
+output_prefix = "mspac"
+# Table-driven game with no disasm: enable the validator-gated pcrel16 jump
+# table auto-walk (same posture as puyo/rka).
+jump_table_autodiscovery = true
+
+# ---------------------------------------------------------------------------
+# Per-game RAM layout. Ms. Pac-Man is not Sonic: the Sonic-shaped tracking
+# fields are unknown and left 0 (cosmetic telemetry only).
+#
+# Stack: the reset SSP is $00000000, so the first push lands at $FFFFFC. The
+# runner-side interrupt stack fields only bound own_deliver_vint's scratch
+# save window; this game's V-int body never runs there (see spec), so they
+# point at the same top-of-RAM.
+# ---------------------------------------------------------------------------
+[ram_layout]
+game_mode      = 0x000000     # unknown (cosmetic)
+vint_runcount  = 0x000000     # unknown (divergence-diff sync only)
+vint_routine   = 0x000000     # no Sonic-style V-int routine byte
+plc_pending    = 0x000000     # no PLC system
+initial_ssp    = 0x01000000   # reset SSP $0 wraps to top of RAM (LOAD-BEARING)
+vbla_stack     = 0x01000000
+intr_stack     = 0x01000000
+player_object  = 0x000000     # unknown (cosmetic)
+level_modes    = []
+
+[functions]
+# Reset entry + V-int handler.
+extra = [0x000200, 0x0014AA]
+late_extra = []
+blacklist = []
+
+# ---------------------------------------------------------------------------
+# Game-owned instruction hooks (see mspacman_spec.c).
+# ---------------------------------------------------------------------------
+
+# `BRA *` idle loops the CPU sits in with interrupts unmasked ($2300).
+[[widescreen_site]]
+addr = 0x0008F6 # gameplay idle (after MOVE #$2300,SR at $0008F2)
+kind = "game_hook"
+
+[[widescreen_site]]
+addr = 0x00F76E # attract/demo idle (after MOVE #$2300,SR at $00F76A)
+kind = "game_hook"
+
+# V-int RTE sites: return to the idle loop the interrupt was taken from.
+[[widescreen_site]]
+addr = 0x001CB0
+kind = "game_hook"
+
+[[widescreen_site]]
+addr = 0x00EBD6
+kind = "game_hook"
+
+[[widescreen_site]]
+addr = 0x00ECCE
+kind = "game_hook"

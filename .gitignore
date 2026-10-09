@@ -2,26 +2,43 @@
 *.bin
 *.gen
 *.smd
+game/*.md
 
-# Build trees and release output.
+# Build trees, logs and release output.
 build/
 build-*/
 dist/
+logs/
 *.zip
+
+# Fetched or built by the tools/ scripts; only the librashader patches are ours.
+third_party/windows/
+third_party/librashader/*
+!third_party/librashader/patches/
 
 # Local tooling and scratch space.
 .claude/
 .vs/
 work/
 ghidra_sega_ldr/
+__pycache__/
 
 # Runtime output that lands next to the exe when run from the tree.
 *.log
 *.map
 *.wav
-dispatch_misses.toml
-floor_coverage.toml
+*.state[0-9]*
+dispatch_misses*.toml
+floor_coverage*.toml
+interior_label_misses*.toml
+floor_unsafe*.toml
+runtime_evidence*
 settings.ini
 !release/settings.ini
+runtime_prefs.ini
+imgui.ini
+librashader_probe.txt
+shader_cache/
+shader_presets/
 rom-*.cfg
 debug.ini
