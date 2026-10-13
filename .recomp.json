@@ -10,11 +10,11 @@
   "project": "Ms. Pac-Man Recomp",
   "status": "playable",
   "targets": ["Windows", "Linux"],
-  "toolchain": "segagenesisrecomp",
+  "toolchain": "Segagenesisrecomp",
   "approach": "Static recompilation of the 68000 code to native C, with an OpenGL frontend and RetroArch shader presets through librashader",
   "maintainers": [{ "name": "vibecodekun", "link": "https://github.com/vibecodekun" }],
   "links": [
     { "label": "Download", "url": "https://github.com/vibecodekun/mspacmanrecomp/releases/latest" }
   ],
-  "notes": "Tengen's 1991 Genesis release. A vertical full-maze view shows every maze whole with no forced scrolling; rewind, save states, preemptive frames and fast forward. Windows x64, x86 and ARM64; Linux x86_64 and aarch64 as a tarball or AppImage. Built from your own Ms. Pac-Man (USA, Europe) ROM, the No-Intro dump; the repository contains no game code or data."
+  "notes": "Tengen's 1991 Genesis release. A vertical full-maze view shows every maze whole with no forced scrolling; rewind, save states, preemptive frames and fast forward. Windows x64, x86 and ARM64; Linux x86_64 and aarch64 as a tarball or AppImage. Needs your own copy of the USA/Europe cartridge, checked by its SHA-1; the repository contains no game code or data."
 }
